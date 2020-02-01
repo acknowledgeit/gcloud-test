@@ -19,7 +19,7 @@ jobs:
       run: echo ::set-output name=tag::$(echo $(node -p -e "require('./package.json').version"))
       
     - name: Build Docker image
-      run: docker build . --file Dockerfile -t eu.gcr.io/acknowledge/gke-test:latest -t eu.gcr.io/acknowledge/gke-test:${{steps.version.outputs.tag}}
+      run: docker build . --file Dockerfile -t eu.gcr.io/acknowledge/gke-test:latest -t eu.gcr.io/acknowledge/gke-test:${{steps.version.outputs.tag}} --platform managed --memory 128Mi
       
     - name: Setup gcloud environment
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
