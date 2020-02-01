@@ -28,7 +28,7 @@ jobs:
         service_account_key: ${{ secrets.GCLOUD_AUTH }}
     
     - name: Authenticate Docker with gcloud
-      run: gcloud auth configure-docker --quiet
+      run: gcloud auth configure-docker eu.gcr.io --quiet
     
     - name: Push docker images to gcr
       run: |
