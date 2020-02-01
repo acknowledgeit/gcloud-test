@@ -15,6 +15,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Get version
+      id: version
       run: echo ::set-output name=tag::$(echo $(node -p -e "require('./package.json').version"))
     - name: Build Docker image
-      run: docker build . --file Dockerfile -t acknowledge/gke-test:latest -t acknowledge/gke-test:${{steps.vars.outputs.tag}}
+      run: docker build . --file Dockerfile -t acknowledge/gke-test:latest -t acknowledge/gke-test:${{steps.version.outputs.tag}}
