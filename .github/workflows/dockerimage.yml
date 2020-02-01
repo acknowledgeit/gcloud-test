@@ -14,8 +14,29 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Get version
+      
+    - name: Get package version
       id: version
       run: echo ::set-output name=tag::$(echo $(node -p -e "require('./package.json').version"))
+      
     - name: Build Docker image
-      run: docker build . --file Dockerfile -t acknowledge/gke-test:latest -t acknowledge/gke-test:${{steps.version.outputs.tag}}
+      run: docker build . --file Dockerfile -t eu.gcr.io/acknowledge/gke-test:latest -t eu.gcr.io/acknowledge/gke-test:${{steps.version.outputs.tag}}
+      
+    - name: Setup gcloud environment
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        service_account_email: ${{ secrets.GCLOUD_EMAIL }}  
+        service_account_key: ${{ secrets.GCLOUD_AUTH }}
+    
+    - name: Authenticate Docker with gcloud
+      run: gcloud auth configure-docker --quiet
+    
+    - name: Push docker images to gcr
+      run: |
+        docker push eu.gcr.io/acknowledge/gke-test:latest
+        docker push eu.gcr.io/acknowledge/gke-test:${{steps.version.outputs.tag}}
+        
+    - name: Deploy new revision to Cloud Run
+      run: |
+        gcloud components install beta --quiet
+        gcloud beta run deploy gke-test --image eu.gcr.io/acknowledge/gke-test:${{steps.version.outputs.tag}} --quiet
