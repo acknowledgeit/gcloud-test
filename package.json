@@ -1,0 +1,17 @@
+{
+  "name": "gke-test",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acknowledgeit/gke-test.git"
+  },
+  "author": "acknowledge",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
