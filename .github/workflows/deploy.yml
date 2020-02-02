@@ -37,5 +37,4 @@ jobs:
         
     - name: Deploy new revision to Cloud Run
       run: |
-        gcloud components install beta --quiet
-        gcloud beta run deploy gke-test --project acknowledge --image eu.gcr.io/acknowledge/gke-test:${{steps.version.outputs.tag}} --platform managed --region europe-west4 --memory 128Mi --allow-unauthenticated --quiet
+        gcloud run deploy gke-test --project acknowledge --image eu.gcr.io/acknowledge/gke-test:${{steps.version.outputs.tag}} --platform managed --region europe-west4 --memory 128Mi --allow-unauthenticated --quiet
